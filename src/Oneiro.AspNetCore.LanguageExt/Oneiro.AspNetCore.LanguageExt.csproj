@@ -22,7 +22,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\..\oneiro_icon.png" 
+    <None Include="../../oneiro_icon.png" 
           Pack="true"
           PackagePath="."
           Link="oneiro_icon.png" />

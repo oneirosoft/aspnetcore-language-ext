@@ -1,4 +1,4 @@
-name: FSharp Validations - Publish
+name: Publish
 
 on:
   workflow_dispatch:

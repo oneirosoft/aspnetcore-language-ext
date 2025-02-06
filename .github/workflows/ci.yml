@@ -1,4 +1,4 @@
-name: FSharp Validations CI
+name: CI
 
 on:
   push:

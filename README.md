@@ -1,6 +1,14 @@
 # Oneiro AspNetCore LanguageExt
 
-Converts LanguageExt monads to `ActionResult` or minimal API `IResult`. 
+[![FSharp Validations CI](https://github.com/oneirosoft/aspnetcore-language-ext/actions/workflows/ci.yml/badge.svg)](https://github.com/oneirosoft/aspnetcore-language-ext/actions/workflows/ci.yml)
+![NuGet Version](https://img.shields.io/nuget/v/Oneiro.AspNetCore.LanguageExt)
+
+Converts LanguageExt monads to AspNetCore's `IResult` for minimal APIs or `IActionResult`
+for controller based APIs. 
+
+## Installation
+
+`dotnet add package Oneiro.AspNetCore.LanguageExt`
 
 ## Quick Reference
 

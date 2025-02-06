@@ -1,77 +1,57 @@
-# dotnet-repo-template
+# Oneiro AspNetCore LanguageExt
 
-A template repository meant to be used for solutions intended
-to be published to nuget.
+Converts LanguageExt monads to `ActionResult` or minimal API `IResult`. 
 
-## Directory Structure
+## Quick Reference
 
+- Any monad that has a proper object will return a success code of `200 OK` with a response body
+- Any monad that returns `Unit` will return a success code of `204 No Content`
+- The `Option<T>` monad will either be a success of `200` or `204` and the none condition is converted to a `404 Not Found`
+    - Monad with nested `Option<T>` such as `Fin<Option<T>>` could return `200`, `204`, `404`, or `500` as `Fin<Option<T>>` could be a success with an option of 
+      - `Unit` (204)
+      - `T` (200)
+      - `None` (404)
+      - `Error` (500).
+- The `Try` monad will return either a 200, 204, or 500
+- The `TryOption` monad will return either a 200, 204, 404, or 500
+- The `Eff` monad will return a 200, 204, or 500
+- The `Aff` monad will return a 200, 204, or 500
+
+Proper IEFT problem detail responses will be presented with the appropriate
+status code based on the exception that is contained within the `Fin`, `Try`, `TryOption`, `Eff`, and `Aff` monads. 
+
+## Usage
+
+LanguageExt monads can be converted to Action or IResult. The extensions functions can be used by importing `Oneiro`.
+
+
+### Quick Start
+```csharp
+using Oneiro;
+//. Other code
+
+IResult result = Try(() => "Hello, World!").ToResult();
 ```
-./
-|-- .github/
-  |-- workflows/
-|-- src/
-  |-- RenameMe.sln
-  |-- tests/
+
+## Minimal APIs
+
+```csharp
+using static LanguageExt.Prelude;
+using Oneiro;
+
+interface IService { Option<string> GetMessage(); }
+
+class MyService : IService {
+    Option<string> GetMessage() => "Hello, World!";
+}
+
+var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddTransient<IService, MyService>();
+
+var app = builder.Build();
+
+app.MapGet("/", (IService service) => service.GetMessage().ToResult());
+
+app.Run();
 ```
-
-_Don't forget to rename the solution file before creating projects_
-
-## GitVersion
-
-Git version is supported out of the box with a relatively simple configuration
-which can be found in the [GitVersion](GitVersion.yml) file.
-
-## Git Ignore
-
-The `.git ignore` file is tailored for _dotnet_ projects and includs ignores for
-`.idea/` (JetBrains) and `.DS_Store/` (OSx) folders. Depending on the use case
-the `.gitignore` file may need to be updated.
-
-## License, Copyright
-
-A license file for `MIT` is included. The default copyright is for
-__Oneirosoft__ and can be updated as needed.
-
-_Check the date as it may need to be updated accordinly_.
-
-## Workflows
-
-Included are workflows for:
-
-- ci
-- ci-pr
-- publish
-
-These templates are located in `.github/workflows`.
-
-__ci__
-
-The `ci` workflow will build and test all projects in the solution when
-an update to main or a tag starting with `v*` is pushed or merged.
-
-The tests use MSTest Adaptor and will need to be modified when using Microsoft's
-Testing Platform.
-
-__ci-pr__
-
-The `ci-pr` workflow will build and run for any pull request. 
-
-The tests use MSTest Adaptor and will need to be modified when using Microsoft's
-Testing Platform.
-
-__publish__
-
-Publish will publish all packable projects contained in the soltuion and relies
-on a `NUGET_API_KEY` to be present for the workflow. All projects will be built
-and tested before being packed and published to nuget.org.
-
-The tests use MSTest Adaptor and will need to be modified when using Microsoft's
-Testing Platform.
-
-## Tests
-
-A sample unit test project has been included and should be renamed appropriately.
-The unit tests should be placed in `src/tests/`.
-
-_The `placeholder.txt` file can be safely removed and is only
-there for git_

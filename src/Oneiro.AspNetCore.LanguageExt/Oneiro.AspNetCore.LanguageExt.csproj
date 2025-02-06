@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net6.0;</TargetFrameworks>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <LanguageVersion>latest</LanguageVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageId>Oneiro.AspNetCore.LanguageExt</PackageId>
+    <Authors>Oneirosoft Contributors</Authors>
+    <Company>Oneirosoft</Company>
+    <Description>Converts the monadic types found in LanguateExt.Core to IResult and IActionResult types.</Description>
+      <PackageTags>languageext;aspnetcore;rest;api;</PackageTags>
+    <RepositoryUrl>https://github.com/oneirosoft/aspnetcore-language-ext</RepositoryUrl>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/oneirosoft/aspnetcore-language-ext</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageIcon>oneiro_icon.png</PackageIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\oneiro_icon.png" 
+          Pack="true"
+          PackagePath="."
+          Link="oneiro_icon.png" />
+    <None Include="../../README.md" Pack="true" PackagePath="." />
+    <None Include="../../LICENSE" Pack="true" PackagePath="." />
+  </ItemGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="LanguageExt.Core" Version="4.4.9" />
+  </ItemGroup>
+
+</Project>

@@ -40,29 +40,21 @@ jobs:
         echo "# ${{ env.semVer }}" >> $GITHUB_STEP_SUMMARY
 
     - name: Restore dependencies
-      run: dotnet restore src/FSharp.Validations
+      run: dotnet restore src/
 
     - name: Build
-      run: dotnet build src/FSharp.Validations -c Release --no-restore
-
-    - name: Test
-      run: |
-        dotnet test src/tests/FSharp.Validations.Tests \
-        --verbosity normal --no-build --no-restore \
-        --configuration Release \
-        --logger "trx;LogFileName=TestResults.trx"      
-
-    - name: Publish test results
-      uses: EnricoMi/publish-unit-test-result-action@v2
-      with:
-        files: '**/*.trx'
-        action_fail: true
+      run: dotnet build src/ -c Release --no-restore
 
     - name: Pack projects
       run: |
-          find src -name "*.csproj" -print0 | xargs -0 -I {} dotnet pack {} -c Release
+          find src -name "*.csproj" -print0 | \
+          xargs -0 -I {} \
+          dotnet pack {} -c Release --no-build
 
     - name: Publish to NuGet.org
       env:
         NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
-      run: dotnet nuget push '**/*.nupkg' --source https://api.nuget.org/v3/index.json --api-key $NUGET_API_KEY
+      run: |
+        dotnet nuget push '**/*.nupkg' \
+        --source https://api.nuget.org/v3/index.json \
+        --api-key $NUGET_API_KEY
